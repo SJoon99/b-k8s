@@ -44,6 +44,11 @@ ingress:
     ns1: 0.0.0.0
     ns2: 0.0.0.0
 
+# POC storage topology has fewer than three OSD failure domains, so use
+# non-replicated Ceph pools for the first CSI validation pass.
+rookCeph:
+  useReplicas: false
+
 repo:
   baseUrl: https://github.com
   owner: SJoon99
