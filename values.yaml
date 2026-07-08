@@ -29,10 +29,12 @@ cluster:
       # Kubespray created the child clusters for Cilium kube-proxy replacement.
       enabled: false
 
-# Day-0 child-cluster bootstrap: install Cilium first, verify Cilium/CoreDNS,
-# then enable CSI/Ceph and higher-level features later.
+# Day-1 child-cluster storage bootstrap: Cilium/CoreDNS is verified, so enable
+# the Ceph-backed CSI layer before higher-level PVC consumers.
 features:
   - org.ulagbulag.io/cni
+  - org.ulagbulag.io/csi
+  - org.ulagbulag.io/distributed-storage-cluster/ceph
 
 ingress:
   domainName: b.scalex.local

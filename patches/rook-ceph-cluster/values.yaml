@@ -1,0 +1,17 @@
+---
+# POC child clusters currently use ControlPlane/Compute roles, not dedicated
+# Storage-role nodes. Allow Rook OSDs to consume cleaned non-OS disks on all
+# prepared child nodes.
+cephClusterSpec:
+  placement:
+    osd:
+      nodeAffinity:
+        requiredDuringSchedulingIgnoredDuringExecution:
+          nodeSelectorTerms:
+            - matchExpressions:
+                - key: node-role.kubernetes.io/kiss
+                  operator: In
+                  values:
+                    - Compute
+                    - ControlPlane
+                    - Storage
