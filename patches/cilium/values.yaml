@@ -1,0 +1,3 @@
+---
+# Reserved for child-cluster-specific Cilium overrides.
+# Keep empty until the first CNI sync shows a concrete need.
