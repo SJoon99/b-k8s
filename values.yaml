@@ -1,0 +1,56 @@
+---
+# b child-cluster preset values for the ScaleX Repo POC.
+# Base/framework repo: https://github.com/SJoon99/eecs-k8s.git
+
+cluster:
+  name: b
+  # eecs-k8s uses cluster.group as the cluster-values repo targetRevision.
+  # Keep an ops branch, mirroring tower-k8s.
+  group: ops
+  singleNode: false
+  standalone: false
+  apiEndpoint: https://10.33.201.190:6443
+  domainBase: openark
+  nameservers:
+    loadBalancer:
+      ipv4: ""
+  pods:
+    ipv4:
+      # Must match the kubeadm/Kubespray podSubnet observed on the child cluster.
+      subnet: 10.96.0.0/12
+      childSubnet: 10.96.0.0/12
+      prefix: 24
+  services:
+    ipv4:
+      # Must match the kubeadm/Kubespray serviceSubnet observed on the child cluster.
+      subnet: 10.112.0.0/12
+      childSubnet: 10.112.0.0/12
+    kubeProxy:
+      # Kubespray created the child clusters for Cilium kube-proxy replacement.
+      enabled: false
+
+# Day-0 child-cluster bootstrap: install Cilium first, verify Cilium/CoreDNS,
+# then enable CSI/Ceph and higher-level features later.
+features:
+  - org.ulagbulag.io/cni
+
+ingress:
+  domainName: b.scalex.local
+  loadBalancerIPs:
+    gitlab: 0.0.0.0
+    ingress: 0.0.0.0
+    ns1: 0.0.0.0
+    ns2: 0.0.0.0
+
+repo:
+  baseUrl: https://github.com
+  owner: SJoon99
+  name: eecs-k8s
+  revision: main
+
+# Tower Argo is the only GitOps control plane for this POC stage.
+tower:
+  cluster: tower
+  controlPlane: false
+  domainName: scalex.local
+  group: ops
