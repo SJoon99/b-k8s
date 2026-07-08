@@ -25,6 +25,8 @@ features:
 The POC nodes are labeled `ControlPlane`/`Compute`, so
 `patches/rook-ceph-cluster/values.yaml` allows OSD placement on those roles.
 
+For this POC, `rookCeph.useReplicas: false` is set because the available data disks are not present on three independent OSD failure domains yet.
+
 ## Child API endpoint
 
 ```text
