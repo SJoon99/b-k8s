@@ -10,17 +10,20 @@ eecs-k8s   # base/framework/app catalog
 b-k8s     # concrete child-cluster values and app patches
 ```
 
-## Initial feature set
+## Active feature set
 
-Only CNI is enabled for the first child-cluster bootstrap stage:
+Cilium/CoreDNS has been verified, so this child cluster now enables Ceph-backed
+CSI as the next storage bootstrap layer:
 
 ```yaml
 features:
   - org.ulagbulag.io/cni
+  - org.ulagbulag.io/csi
+  - org.ulagbulag.io/distributed-storage-cluster/ceph
 ```
 
-CSI/Ceph is intentionally left for a later stage after Cilium and CoreDNS are
-verified healthy.
+The POC nodes are labeled `ControlPlane`/`Compute`, so
+`patches/rook-ceph-cluster/values.yaml` allows OSD placement on those roles.
 
 ## Child API endpoint
 
