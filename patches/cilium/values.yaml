@@ -1,3 +1,7 @@
 ---
-# Reserved for child-cluster-specific Cilium overrides.
-# Keep empty until the first CNI sync shows a concrete need.
+# Day-0 CNI validation only needs Cilium itself; keep Hubble add-ons off.
+hubble:
+  relay:
+    enabled: false
+  ui:
+    enabled: false
