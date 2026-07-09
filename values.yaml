@@ -61,3 +61,8 @@ tower:
   controlPlane: false
   domainName: scalex.local
   group: ops
+
+# Enable a cluster-local app-of-apps root so POC/site-specific apps can live in
+# this repo instead of the common eecs-k8s framework.
+clusterLocalApps:
+  enabled: true
