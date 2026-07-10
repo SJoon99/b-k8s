@@ -5,6 +5,29 @@ cluster:
   project: b-ops
 
 apps:
+  cilium-lb-ipam:
+    enabled: true
+    name: b-cilium-lb-ipam
+    namespace: kube-system
+    project: b-ops
+    destination:
+      name: b
+    source:
+      repoURL: https://github.com/SJoon99/b-k8s.git
+      path: apps/cilium-lb-ipam
+      targetRevision: ops
+    annotations:
+      argocd.argoproj.io/sync-wave: "20"
+    syncPolicy:
+      automated:
+        enabled: true
+        selfHeal: true
+        prune: true
+      syncOptions:
+        - CreateNamespace=false
+        - RespectIgnoreDifferences=true
+        - ServerSideApply=true
+
   rook-ceph-poc-config:
     enabled: true
     name: b-rook-ceph-poc-config
