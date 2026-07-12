@@ -15,3 +15,38 @@ cephClusterSpec:
                     - Compute
                     - ControlPlane
                     - Storage
+
+# B owns the object-storage endpoint used by the federation POC. The common
+# eecs-k8s chart still provides the implementation; this cluster patch only
+# selects the object-store topology and bucket StorageClass.
+cephObjectStores:
+  - name: scalex-poc
+    spec:
+      metadataPool:
+        failureDomain: host
+        replicated:
+          size: 2
+      dataPool:
+        failureDomain: host
+        replicated:
+          size: 2
+      preservePoolsOnDelete: true
+      gateway:
+        port: 80
+        instances: 1
+        priorityClassName: system-cluster-critical
+        resources:
+          requests:
+            cpu: 100m
+            memory: 256Mi
+          limits:
+            memory: 1Gi
+    storageClass:
+      enabled: true
+      name: ceph-bucket
+      reclaimPolicy: Retain
+      volumeBindingMode: Immediate
+      parameters:
+        region: scalex-poc
+    ingress:
+      enabled: false
