@@ -51,3 +51,26 @@ apps:
         - CreateNamespace=false
         - RespectIgnoreDifferences=true
         - ServerSideApply=true
+
+  rook-ceph-rgw-poc:
+    enabled: true
+    name: b-rook-ceph-rgw-poc
+    namespace: csi-rook-ceph
+    project: b-ops
+    destination:
+      name: b
+    source:
+      repoURL: https://github.com/SJoon99/b-k8s.git
+      path: apps/rook-ceph-rgw-poc
+      targetRevision: ops
+    annotations:
+      argocd.argoproj.io/sync-wave: "60"
+    syncPolicy:
+      automated:
+        enabled: true
+        selfHeal: true
+        prune: true
+      syncOptions:
+        - CreateNamespace=false
+        - RespectIgnoreDifferences=true
+        - ServerSideApply=true
