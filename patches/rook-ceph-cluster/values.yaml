@@ -26,10 +26,16 @@ cephObjectStores:
         failureDomain: host
         replicated:
           size: 2
+        # The POC has only two OSD failure domains with highly skewed disk
+        # weights. Keep two replicas, but allow an undersized PG to serve I/O.
+        parameters:
+          min_size: "1"
       dataPool:
         failureDomain: host
         replicated:
           size: 2
+        parameters:
+          min_size: "1"
       preservePoolsOnDelete: true
       gateway:
         port: 80
