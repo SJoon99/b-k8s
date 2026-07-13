@@ -18,14 +18,21 @@ CSI as the next storage bootstrap layer:
 ```yaml
 features:
   - org.ulagbulag.io/cni
+  - org.ulagbulag.io/cni/lb-ipam
   - org.ulagbulag.io/csi
   - org.ulagbulag.io/distributed-storage-cluster/ceph
+  - org.ulagbulag.io/distributed-storage-cluster/ceph/provisioning
+  - org.ulagbulag.io/object-store/ceph
 ```
 
 The POC nodes are labeled `ControlPlane`/`Compute`, so
 `patches/rook-ceph-cluster/values.yaml` allows OSD placement on those roles.
 
 For this POC, `rookCeph.useReplicas: false` is set because the available data disks are not present on three independent OSD failure domains yet.
+
+The Cilium patch declares the `10.33.142.0/24` LoadBalancer pool. The Ceph
+provisioning patch applies the one-replica post-config. The RGW patch owns the
+bucket claim and B endpoint used by the federation POC.
 
 ## Child API endpoint
 

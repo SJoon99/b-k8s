@@ -33,8 +33,11 @@ cluster:
 # the Ceph-backed CSI layer before higher-level PVC consumers.
 features:
   - org.ulagbulag.io/cni
+  - org.ulagbulag.io/cni/lb-ipam
   - org.ulagbulag.io/csi
   - org.ulagbulag.io/distributed-storage-cluster/ceph
+  - org.ulagbulag.io/distributed-storage-cluster/ceph/provisioning
+  - org.ulagbulag.io/object-store/ceph
 
 ingress:
   domainName: b.scalex.local
@@ -61,8 +64,3 @@ tower:
   controlPlane: false
   domainName: scalex.local
   group: ops
-
-# Enable a cluster-local app-of-apps root so POC/site-specific apps can live in
-# this repo instead of the common eecs-k8s framework.
-clusterLocalApps:
-  enabled: true
