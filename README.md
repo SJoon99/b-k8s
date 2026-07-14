@@ -32,7 +32,12 @@ For this POC, `rookCeph.useReplicas: false` is set because the available data di
 
 The Cilium patch declares the `10.33.142.0/24` LoadBalancer pool. The Ceph
 provisioning patch applies the one-replica post-config. The RGW patch owns the
-bucket claim and B endpoint used by the federation POC.
+shared B endpoint used by the federation POC.
+
+`CephObjectStore/scalex-poc`, `StorageClass/ceph-bucket`, and the fixed RGW
+LoadBalancer endpoint are B Infra. Application bucket claims are intentionally
+not declared here: each feature Helm chart declares its namespaced OBC, and
+`scalex-federation` selects the member cluster through Karmada policy.
 
 ## Child API endpoint
 
