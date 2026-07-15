@@ -1,24 +1,45 @@
 ---
+# expose:
+#   type: loadBalancer
+
+#   tls:
+#     enabled: false
+#     certSource: auto
+#     auto:
+#       commonName: harbor.b.scalex.local
+
+#   loadBalancer:
+#     name: harbor
+#     annotations:
+#       # 실제 미사용 IP로 교체
+#       lbipam.cilium.io/ips: "10.33.142.25"
+
+#       # eecs의 k8s-gateway DNS를 사용할 경우
+#       coredns.io/hostname: harbor.b.scalex.local
+#     ports:
+#       httpPort: 80
+#       httpsPort: 443
+#     sourceRanges: []
+
+# # externalURL: https://harbor.b.scalex.local
+# externalURL: http://10.33.142.25
+
+# enableMigrateHelmHook: false
+
 expose:
   type: loadBalancer
 
   tls:
-    enabled: true
-    certSource: auto
-    auto:
-      commonName: harbor.b.scalex.local
+    enabled: false
 
   loadBalancer:
     name: harbor
     annotations:
-      # 실제 미사용 IP로 교체
       lbipam.cilium.io/ips: "10.33.142.25"
-
-      # eecs의 k8s-gateway DNS를 사용할 경우
-      coredns.io/hostname: harbor.b.scalex.local
     ports:
       httpPort: 80
-      httpsPort: 443
     sourceRanges: []
 
-externalURL: https://harbor.b.scalex.local
+externalURL: http://10.33.142.25
+
+enableMigrateHelmHook: false

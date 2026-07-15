@@ -65,3 +65,9 @@ tower:
   controlPlane: false
   domainName: scalex.local
   group: ops
+
+applications:
+  disabled:
+    - ingress-b-scalex-local-exdns-1
+    - ingress-b-scalex-local-exdns-2
+    - ingress-b-scalex-local-ingress-nginx
