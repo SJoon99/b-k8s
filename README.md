@@ -35,9 +35,14 @@ provisioning patch applies the one-replica post-config. The RGW patch owns the
 shared B endpoint used by the federation POC.
 
 `CephObjectStore/scalex-poc`, `StorageClass/ceph-bucket`, and the fixed RGW
-LoadBalancer endpoint are B Infra. Application bucket claims are intentionally
-not declared here: each feature Helm chart declares its namespaced OBC, and
-`scalex-federation` selects the member cluster through Karmada policy.
+LoadBalancer endpoint are B Infra. The `tower-harbor-registry` OBC is also
+declared here because it is a platform dependency for Tower Harbor, not a
+User/Dev feature release. Its generated credential is copied once into a
+Tower bootstrap Secret and is never committed to Git.
+
+Feature-owned buckets remain namespaced OBCs in their feature charts and are
+selected through Federation/Karmada policy. A bucket must have exactly one
+owner; do not declare it from both Infra and Federation.
 
 ## Child API endpoint
 
