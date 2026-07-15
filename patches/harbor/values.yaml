@@ -20,3 +20,5 @@ expose:
       httpPort: 80
       httpsPort: 443
     sourceRanges: []
+
+externalURL: https://harbor.b.scalex.local
