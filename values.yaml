@@ -38,6 +38,7 @@ features:
   - org.ulagbulag.io/distributed-storage-cluster/ceph
   - org.ulagbulag.io/distributed-storage-cluster/ceph/provisioning
   - org.ulagbulag.io/object-store/ceph
+  - org.ulagbulag.io/workload-namespace
 
 ingress:
   domainName: b.scalex.local
