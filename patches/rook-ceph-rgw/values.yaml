@@ -1,5 +1,13 @@
 ---
 rookCephRgw:
+  objectBucketClaims:
+    - name: tower-harbor-registry
+      bucketName: tower-harbor-registry
+      storageClassName: ceph-bucket
+      labels:
+        app.kubernetes.io/name: tower-harbor-registry
+        app.kubernetes.io/part-of: tower-harbor
+        scalex.io/infra-owner: b-k8s
   services:
     - name: scalex-poc-rgw
       labels:
