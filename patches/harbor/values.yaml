@@ -22,6 +22,6 @@ expose:
     sourceRanges: []
 
 # externalURL: https://harbor.b.scalex.local
-externalURL: https://10.33.142.25
+externalURL: http://10.33.142.25
 
 enableMigrateHelmHook: false
