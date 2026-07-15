@@ -23,6 +23,7 @@ features:
   - org.ulagbulag.io/distributed-storage-cluster/ceph
   - org.ulagbulag.io/distributed-storage-cluster/ceph/provisioning
   - org.ulagbulag.io/object-store/ceph
+  - org.ulagbulag.io/workload-namespace
 ```
 
 The POC nodes are labeled `ControlPlane`/`Compute`, so
@@ -46,6 +47,11 @@ but its lifecycle now belongs exclusively to `b-k8s`. Federation keeps only a
 non-secret runtime binding that reads the Rook-generated Secret/ConfigMap and
 normalizes them for the workload. Neither claim nor its credential values are
 submitted to Karmada from Git.
+
+`patches/workload-namespace/values.yaml` makes
+`Namespace/scalex-rgw-analysis-web` an explicit B Infra prerequisite. Karmada's
+source namespace opts out of automatic namespace propagation, so deleting a
+Federation release cannot delete the namespace that contains the B-owned OBC.
 
 A bucket must have exactly one declarative owner. Do not declare the same OBC
 from Federation, a feature chart, or another cluster repo.
