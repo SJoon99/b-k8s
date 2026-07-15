@@ -3,7 +3,7 @@ expose:
   type: loadBalancer
 
   tls:
-    enabled: true
+    enabled: false
     certSource: auto
     auto:
       commonName: harbor.b.scalex.local
@@ -21,6 +21,7 @@ expose:
       httpsPort: 443
     sourceRanges: []
 
-externalURL: https://harbor.b.scalex.local
+# externalURL: https://harbor.b.scalex.local
+externalURL: https://10.33.142.25
 
 enableMigrateHelmHook: false
