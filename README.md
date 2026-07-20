@@ -23,6 +23,7 @@ features:
   - org.ulagbulag.io/distributed-storage-cluster/ceph
   - org.ulagbulag.io/distributed-storage-cluster/ceph/provisioning
   - org.ulagbulag.io/object-store/ceph
+  - org.ulagbulag.io/workload-namespace
 ```
 
 The POC nodes are labeled `ControlPlane`/`Compute`, so
@@ -34,15 +35,26 @@ The Cilium patch declares the `10.33.142.0/24` LoadBalancer pool. The Ceph
 provisioning patch applies the one-replica post-config. The RGW patch owns the
 shared B endpoint used by the federation POC.
 
-`CephObjectStore/scalex-poc`, `StorageClass/ceph-bucket`, and the fixed RGW
-LoadBalancer endpoint are B Infra. The `tower-harbor-registry` OBC is also
-declared here because it is a platform dependency for Tower Harbor, not a
-User/Dev feature release. Its generated credential is copied once into a
-Tower bootstrap Secret and is never committed to Git.
+`CephObjectStore/scalex-poc`, `StorageClass/ceph-bucket`, the fixed RGW
+LoadBalancer endpoint, and bucket claims are B Infra. This patch declares two
+claims with separate consumers:
 
-Feature-owned buckets remain namespaced OBCs in their feature charts and are
-selected through Federation/Karmada policy. A bucket must have exactly one
-owner; do not declare it from both Infra and Federation.
+- `tower-harbor-registry` for Tower Harbor
+- `scalex-rgw-analysis-web/rgw-analysis-web-bucket` for the Federation POC
+
+The latter keeps the existing `rgw-analysis-web-poc` bucket identity and data,
+but its lifecycle now belongs exclusively to `b-k8s`. Federation keeps only a
+non-secret runtime binding that reads the Rook-generated Secret/ConfigMap and
+normalizes them for the workload. Neither claim nor its credential values are
+submitted to Karmada from Git.
+
+`patches/workload-namespace/values.yaml` makes
+`Namespace/scalex-rgw-analysis-web` an explicit B Infra prerequisite. Karmada's
+source namespace opts out of automatic namespace propagation, so deleting a
+Federation release cannot delete the namespace that contains the B-owned OBC.
+
+A bucket must have exactly one declarative owner. Do not declare the same OBC
+from Federation, a feature chart, or another cluster repo.
 
 ## Child API endpoint
 

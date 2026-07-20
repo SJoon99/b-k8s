@@ -5,8 +5,8 @@
 cluster:
   name: b
   # eecs-k8s uses cluster.group as the cluster-values repo targetRevision.
-  # Keep an ops branch, mirroring tower-k8s.
-  group: ops
+  # main is the canonical live branch for every cluster repository.
+  group: main
   singleNode: false
   standalone: false
   apiEndpoint: https://10.33.201.190:6443
@@ -38,6 +38,7 @@ features:
   - org.ulagbulag.io/distributed-storage-cluster/ceph
   - org.ulagbulag.io/distributed-storage-cluster/ceph/provisioning
   - org.ulagbulag.io/object-store/ceph
+  - org.ulagbulag.io/workload-namespace
 
 ingress:
   domainName: b.scalex.local
@@ -63,6 +64,7 @@ tower:
   cluster: tower
   controlPlane: false
   domainName: scalex.local
+  # Argo project/group identity, not a Git branch.
   group: ops
 
 applications:

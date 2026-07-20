@@ -8,6 +8,18 @@ rookCephRgw:
         app.kubernetes.io/name: tower-harbor-registry
         app.kubernetes.io/part-of: tower-harbor
         scalex.io/infra-owner: b-k8s
+    - name: rgw-analysis-web-bucket
+      namespace: scalex-rgw-analysis-web
+      bucketName: rgw-analysis-web-poc
+      storageClassName: ceph-bucket
+      annotations:
+        scalex.io/bucket-naming-mode: compatibility-fixed
+      labels:
+        app.kubernetes.io/name: rgw-analysis-web
+        app.kubernetes.io/part-of: scalex-federation-poc
+        scalex.io/component: object-storage-claim
+        scalex.io/infra-owner: b-k8s
+        scalex.io/release: rgw-analysis-web
   services:
     - name: scalex-poc-rgw
       labels:

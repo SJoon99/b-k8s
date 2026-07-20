@@ -1,0 +1,12 @@
+---
+namespaces:
+  - name: scalex-rgw-analysis-web
+    owner: b-k8s
+    labels:
+      app.kubernetes.io/part-of: scalex-federation-poc
+      scalex.io/release: rgw-analysis-web
+  - name: scalex-temp-poc
+    owner: b-k8s
+    labels:
+      app.kubernetes.io/part-of: scalex-federation-poc
+      scalex.io/release: temp-poc
