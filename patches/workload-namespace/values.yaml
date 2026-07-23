@@ -10,3 +10,8 @@ namespaces:
     labels:
       app.kubernetes.io/part-of: scalex-federation-poc
       scalex.io/release: temp-poc
+  - name: scalex-sample-poc
+    owner: b-k8s
+    labels:
+      app.kubernetes.io/part-of: scalex-federation-poc
+      scalex.io/release: sample-poc
