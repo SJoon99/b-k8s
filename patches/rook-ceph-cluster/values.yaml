@@ -1,0 +1,58 @@
+---
+# POC child clusters currently use ControlPlane/Compute roles, not dedicated
+# Storage-role nodes. Allow Rook OSDs to consume cleaned non-OS disks on all
+# prepared child nodes.
+cephClusterSpec:
+  placement:
+    osd:
+      nodeAffinity:
+        requiredDuringSchedulingIgnoredDuringExecution:
+          nodeSelectorTerms:
+            - matchExpressions:
+                - key: node-role.kubernetes.io/kiss
+                  operator: In
+                  values:
+                    - Compute
+                    - ControlPlane
+                    - Storage
+
+# B owns the object-storage endpoint used by the federation POC. The common
+# eecs-k8s chart still provides the implementation; this cluster patch only
+# selects the object-store topology and bucket StorageClass.
+cephObjectStores:
+  - name: scalex-poc
+    spec:
+      metadataPool:
+        failureDomain: host
+        replicated:
+          size: 2
+        # The POC has only two OSD failure domains with highly skewed disk
+        # weights. Keep two replicas, but allow an undersized PG to serve I/O.
+        parameters:
+          min_size: "1"
+      dataPool:
+        failureDomain: host
+        replicated:
+          size: 2
+        parameters:
+          min_size: "1"
+      preservePoolsOnDelete: true
+      gateway:
+        port: 80
+        instances: 1
+        priorityClassName: system-cluster-critical
+        resources:
+          requests:
+            cpu: 100m
+            memory: 256Mi
+          limits:
+            memory: 1Gi
+    storageClass:
+      enabled: true
+      name: ceph-bucket
+      reclaimPolicy: Retain
+      volumeBindingMode: Immediate
+      parameters:
+        region: scalex-poc
+    ingress:
+      enabled: false

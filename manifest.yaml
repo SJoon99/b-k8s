@@ -2,10 +2,11 @@
 appVersion: org.ulagbulag.io/v1alpha1
 kind: Manifest
 metadata:
-  name: datax
-  labels:
-    org.ulagbulag.io/status: sandbox-validated
+  name: b
 spec:
   group: ops
-  phase: migration
+  phase: alpha
   scale: small
+  users:
+    owners:
+      - SJP <sjp@example.local>

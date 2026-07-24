@@ -1,0 +1,7 @@
+---
+# Day-0 CNI validation only needs Cilium itself; keep Hubble add-ons off.
+hubble:
+  relay:
+    enabled: false
+  ui:
+    enabled: false

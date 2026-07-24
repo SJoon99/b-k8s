@@ -1,41 +1,74 @@
 ---
-features:
-  - org.ulagbulag.io/cni
+# b child-cluster preset values for the ScaleX Repo POC.
+# Base/framework repo: https://github.com/SJoon99/eecs-k8s.git
 
 cluster:
-  name: datax
+  name: b
+  # eecs-k8s uses cluster.group as the cluster-values repo targetRevision.
+  # main is the canonical live branch for every cluster repository.
   group: main
   singleNode: false
   standalone: false
-  apiEndpoint: https://192.0.2.12:6443
+  apiEndpoint: https://10.33.201.190:6443
   domainBase: openark
   nameservers:
     loadBalancer:
       ipv4: ""
   pods:
     ipv4:
-      subnet: 10.122.0.0/16
-      childSubnet: 10.122.0.0/16
+      # Must match the kubeadm/Kubespray podSubnet observed on the child cluster.
+      subnet: 10.96.0.0/12
+      childSubnet: 10.96.0.0/12
       prefix: 24
   services:
     ipv4:
-      subnet: 10.123.0.0/16
-      childSubnet: 10.123.0.0/16
+      # Must match the kubeadm/Kubespray serviceSubnet observed on the child cluster.
+      subnet: 10.112.0.0/12
+      childSubnet: 10.112.0.0/12
     kubeProxy:
+      # Kubespray created the child clusters for Cilium kube-proxy replacement.
       enabled: false
 
-clusterRepository:
-  name: datax-sandbox-k8s
-  revision: main
+# Day-1 child-cluster storage bootstrap: Cilium/CoreDNS is verified, so enable
+# the Ceph-backed CSI layer before higher-level PVC consumers.
+features:
+  - org.ulagbulag.io/cni
+  - org.ulagbulag.io/cni/lb-ipam
+  - org.ulagbulag.io/csi
+  - org.ulagbulag.io/distributed-storage-cluster/ceph
+  - org.ulagbulag.io/distributed-storage-cluster/ceph/provisioning
+  - org.ulagbulag.io/object-store/ceph
+  - org.ulagbulag.io/workload-namespace
+
+ingress:
+  domainName: b.scalex.local
+  loadBalancerIPs:
+    gitlab: 0.0.0.0
+    ingress: 0.0.0.0
+    ns1: 0.0.0.0
+    ns2: 0.0.0.0
+
+# POC storage topology has fewer than three OSD failure domains, so use
+# non-replicated Ceph pools for the first CSI validation pass.
+rookCeph:
+  useReplicas: false
 
 repo:
   baseUrl: https://github.com
-  owner: SmartX-Team
-  name: smartx-k8s
-  revision: scalex-sandbox-smartx-k8s
+  owner: SJoon99
+  name: eecs-k8s
+  revision: main
 
+# Tower Argo is the only GitOps control plane for this POC stage.
 tower:
-  cluster: towerx
+  cluster: tower
   controlPlane: false
-  domainName: sandbox.invalid
+  domainName: scalex.local
+  # Argo project/group identity, not a Git branch.
   group: ops
+
+applications:
+  disabled:
+    - ingress-b-scalex-local-exdns-1
+    - ingress-b-scalex-local-exdns-2
+    - ingress-b-scalex-local-ingress-nginx
