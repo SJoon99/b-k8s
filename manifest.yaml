@@ -1,0 +1,11 @@
+---
+appVersion: org.ulagbulag.io/v1alpha1
+kind: Manifest
+metadata:
+  name: datax
+  labels:
+    org.ulagbulag.io/status: sandbox-validated
+spec:
+  group: ops
+  phase: migration
+  scale: small

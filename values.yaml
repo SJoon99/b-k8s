@@ -1,0 +1,41 @@
+---
+features:
+  - org.ulagbulag.io/cni
+
+cluster:
+  name: datax
+  group: main
+  singleNode: false
+  standalone: false
+  apiEndpoint: https://192.0.2.12:6443
+  domainBase: openark
+  nameservers:
+    loadBalancer:
+      ipv4: ""
+  pods:
+    ipv4:
+      subnet: 10.122.0.0/16
+      childSubnet: 10.122.0.0/16
+      prefix: 24
+  services:
+    ipv4:
+      subnet: 10.123.0.0/16
+      childSubnet: 10.123.0.0/16
+    kubeProxy:
+      enabled: false
+
+clusterRepository:
+  name: datax-sandbox-k8s
+  revision: main
+
+repo:
+  baseUrl: https://github.com
+  owner: SmartX-Team
+  name: smartx-k8s
+  revision: scalex-sandbox-smartx-k8s
+
+tower:
+  cluster: towerx
+  controlPlane: false
+  domainName: sandbox.invalid
+  group: ops
